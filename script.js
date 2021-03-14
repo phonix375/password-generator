@@ -4,6 +4,7 @@ function createPassword (passwordLen, lowerCase, uppercase, simbels) {
   var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   var lowe = 'abcdefghijklmnopqrstuvwxyz';
   var simbel = "\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~";
+  var numbers = "1234567890"
   //this will hold the string of all posible simbels 
   var radomIn = '';
   //this will be the return of the function
@@ -17,6 +18,9 @@ function createPassword (passwordLen, lowerCase, uppercase, simbels) {
   if(simbels){
     radomIn += simbel;
   };
+  if(numbers){
+    radomIn += numbers;
+  }
   for(var i = 0; i < passwordLen ; i++){
     var temp = radomIn[Math.floor(Math.random() * (radomIn.length))];
     res+= temp;
@@ -29,20 +33,22 @@ function getTypeOfCarecters(){
   var lowerCase = false;
   var uppercase = false;
   var simbels = false;
+  var numbers = false;
   //make sure the user didn't select any of the options
   while(!lowerCase || !uppercase || !simbels){
     lowerCase = confirm("Include lowercase latters? ");
     uppercase = confirm("Include uppercase latters? ");
     simbels = confirm("Include simbels? ");
+    numbers = confirm("Include numbers?");
 
-    if(!lowerCase && !uppercase && !simbels){
+    if(!lowerCase && !uppercase && !simbels && !numbers){
       alert('please select at least one option')
     }
     else{
       break;
     };
   };
-  return [lowerCase,uppercase,simbels];
+  return [lowerCase,uppercase,simbels,numbers];
 }
 
 function generatePassword(){
@@ -65,7 +71,7 @@ function generatePassword(){
   }
   var types = getTypeOfCarecters();
 // get the type of carecters from the user
-  return createPassword(passwordLen, types[0], types[1], types[2]);
+  return createPassword(passwordLen, types[0], types[1], types[2], types[3]);
   }
 
 // Get references to the #generate element
