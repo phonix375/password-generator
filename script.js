@@ -3,7 +3,7 @@ function createPassword (passwordLen, lowerCase, uppercase, simbels) {
   // inisialise the list's of posible simbels and latters 
   var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   var lowe = 'abcdefghijklmnopqrstuvwxyz';
-  var simbel = " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+  var simbel = "\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~";
   //this will hold the string of all posible simbels 
   var radomIn = '';
   //this will be the return of the function
@@ -18,11 +18,32 @@ function createPassword (passwordLen, lowerCase, uppercase, simbels) {
     radomIn += simbel;
   };
   for(var i = 0; i < passwordLen ; i++){
-
-    res+= radomIn[Math.floor(Math.random() * (radomIn.length + 1))];
+    var temp = radomIn[Math.floor(Math.random() * (radomIn.length))];
+    res+= temp;
   }
   return res;
 };
+
+// get the list if carecters from the user to include in the password
+function getTypeOfCarecters(){
+  var lowerCase = false;
+  var uppercase = false;
+  var simbels = false;
+  //make sure the user didn't select any of the options
+  while(!lowerCase || !uppercase || !simbels){
+    lowerCase = confirm("Include lowercase latters? ");
+    uppercase = confirm("Include uppercase latters? ");
+    simbels = confirm("Include simbels? ");
+
+    if(!lowerCase && !uppercase && !simbels){
+      alert('please select at least one option')
+    }
+    else{
+      break;
+    };
+  };
+  return [lowerCase,uppercase,simbels];
+}
 
 function generatePassword(){
   var passwordLen = window.prompt('please select a password lenght between 8 - 128');
@@ -34,7 +55,7 @@ function generatePassword(){
   }
   //check to see if the user entered a number 
   if(!(/^-?[\d.]+(?:e-?\d+)?$/.test(passwordLen)) || passwordLen.includes(".")){
-    alert('Please enter only numbers round')
+    alert('Please enter only numbers')
     generatePassword();
   }
   passwordLen = parseInt(passwordLen);
@@ -42,11 +63,9 @@ function generatePassword(){
     alert('Please enter a number between 8 - 128')
     generatePassword();
   }
+  var types = getTypeOfCarecters();
 // get the type of carecters from the user
-  var lowerCase = confirm("Include lowercase latters? ");
-  var uppercase = confirm("Include uppercase latters? ");
-  var simbels = confirm("Include simbels? ");
-  return createPassword(passwordLen, lowerCase, uppercase, simbels);
+  return createPassword(passwordLen, types[0], types[1], types[2]);
   }
 
 // Get references to the #generate element
